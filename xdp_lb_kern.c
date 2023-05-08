@@ -58,7 +58,12 @@ int xdp_load_balancer(struct xdp_md *ctx)
     {
         bpf_printk("Hit else branch\n");
         iph->daddr = CLIENT_IP;
-        // eth->h_dest[5] = CLIENT;
+        eth->h_dest[0] = client_mac[0];
+        eth->h_dest[1] = client_mac[1];
+        eth->h_dest[2] = client_mac[2];
+        eth->h_dest[3] = client_mac[3];
+        eth->h_dest[4] = client_mac[4];
+        eth->h_dest[5] = client_mac[5];
     }
     iph->saddr = PROXY_IP;
     eth->h_source[0] = proxy_mac[0];
@@ -69,7 +74,7 @@ int xdp_load_balancer(struct xdp_md *ctx)
     eth->h_source[5] = proxy_mac[5];
 
     iph->check = iph_csum(iph);
-
+    
     return XDP_TX;
 }
 
