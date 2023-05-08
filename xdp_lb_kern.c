@@ -34,20 +34,20 @@ int xdp_load_balancer(struct xdp_md *ctx)
     if (iph->protocol != IPPROTO_UDP)
         return XDP_PASS;
 
-    bpf_printk("Got UDP packet from %x \n", iph->saddr);
+    bpf_printk("Got UDP packet from %x \n", bpf_ntohs(iph->saddr));
 
     unsigned char client_mac[] = {0x02, 0xa1, 0x16, 0x74, 0xc7, 0x37};
     unsigned char proxy_mac[] = {0x02, 0x95, 0x89, 0x6d, 0x91, 0xe3};
     unsigned char recp_mac1[] = {0x02, 0xf0, 0xc8, 0xe5, 0xd6, 0x67};
     unsigned char recp_mac2[] = {0x02, 0x9d, 0x0f, 0x11, 0xba, 0x09};
 
-    if (iph->saddr == CLIENT_IP)
+    if (bpf_ntohs(iph->saddr) == CLIENT_IP)
     {
         // char be = BACKEND_A;
         // if (bpf_ktime_get_ns() % 2)
         //     be = BACKEND_B;
         bpf_printk("Hit if branch\n");
-        iph->daddr = RECP_IP1;
+        iph->daddr = bpf_htons(RECP_IP1);
         
         eth->h_dest[0] = recp_mac1[0];
         eth->h_dest[1] = recp_mac1[1];
@@ -59,7 +59,7 @@ int xdp_load_balancer(struct xdp_md *ctx)
     else
     {
         bpf_printk("Hit else branch\n");
-        iph->daddr = RECP_IP1;
+        iph->daddr = bpf_htons(RECP_IP1);
         
         eth->h_dest[0] = recp_mac1[0];
         eth->h_dest[1] = recp_mac1[1];
@@ -76,7 +76,7 @@ int xdp_load_balancer(struct xdp_md *ctx)
         // eth->h_dest[4] = client_mac[4];
         // eth->h_dest[5] = client_mac[5];
     }
-    iph->saddr = PROXY_IP;
+    iph->saddr = bpf_htons(PROXY_IP);
     eth->h_source[0] = proxy_mac[0];
     eth->h_source[1] = proxy_mac[1];
     eth->h_source[2] = proxy_mac[2];
