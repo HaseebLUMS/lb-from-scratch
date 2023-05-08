@@ -20,7 +20,7 @@ int xdp_load_balancer(struct xdp_md *ctx)
     void *data = (void *)(long)ctx->data;
     void *data_end = (void *)(long)ctx->data_end;
 
-    bpf_printk("got something");
+    bpf_printk("got something\n");
 
     struct ethhdr *eth = data;
     if (data + sizeof(struct ethhdr) > data_end)
@@ -36,7 +36,7 @@ int xdp_load_balancer(struct xdp_md *ctx)
     if (iph->protocol != IPPROTO_UDP)
         return XDP_PASS;
 
-    bpf_printk("Got UDP packet from %x", iph->saddr);
+    bpf_printk("Got UDP packet from %x \n", iph->saddr);
 
     unsigned char client_mac[] = {0x02, 0xa1, 0x16, 0x74, 0xc7, 0x37};
     unsigned char proxy_mac[] = {0x02, 0x95, 0x89, 0x6d, 0x91, 0xe3};
@@ -60,7 +60,7 @@ int xdp_load_balancer(struct xdp_md *ctx)
     }
     else
     {
-        bpf_printk("Hit else branch");
+        bpf_printk("Hit else branch\n");
         iph->daddr = CLIENT_IP;
         eth->h_dest[0] = client_mac[0];
         eth->h_dest[1] = client_mac[1];
