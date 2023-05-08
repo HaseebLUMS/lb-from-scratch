@@ -2,12 +2,10 @@
 
 #define IP_ADDRESS(x) (unsigned int)(172 + (17 << 8) + (0 << 16) + (x << 24))
 
-#define CLIENT_IP (unsigned int)(172 + 31 + 10 + 0)
-#define PROXY_IP (unsigned int)(172 + 31 + 11 + 0)
-#define RECP_IP1 (unsigned int)(172 + 31 + 12 + 0)
-#define RECP_IP2 (unsigned int)(172 + 31 + 12 + 1)
-
-#define CLIENT_MAC (unsigned int)(02:a1:16:74:c7:37)
+#define CLIENT_IP (unsigned int)(172 + (31 << 8) + (10 << 16) + (0 << 24))
+#define PROXY_IP (unsigned int)(172 + (31 << 8) + (11 << 16) + (0 << 24))
+#define RECP_IP1 (unsigned int)(172 + (31 << 8) + (12 << 16) + (0 << 24))
+#define RECP_IP2 (unsigned int)(172 + (31 << 8) + (12 << 16) + (1 << 24))
 
 #define BACKEND_A 2
 #define BACKEND_B 3
