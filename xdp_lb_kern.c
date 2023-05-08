@@ -20,8 +20,6 @@ int xdp_load_balancer(struct xdp_md *ctx)
     void *data = (void *)(long)ctx->data;
     void *data_end = (void *)(long)ctx->data_end;
 
-    bpf_printk("got something\n");
-
     struct ethhdr *eth = data;
     if (data + sizeof(struct ethhdr) > data_end)
         return XDP_ABORTED;
