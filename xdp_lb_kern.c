@@ -33,7 +33,7 @@ int xdp_load_balancer(struct xdp_md *ctx)
         return XDP_PASS;
 
     struct udphdr *udph = data + sizeof(struct ethhdr) + sizeof(struct iphdr);
-    if (data + sizeof(struct udphdr) + sizeof(struct udphdr) > data_end)
+    if (data + sizeof(struct ethhdr) + sizeof(struct iphdr) + sizeof(struct udphdr) > data_end)
         return XDP_ABORTED;
     
     if (iph->saddr == CLIENT_IP && udph->dest == 34254) {
