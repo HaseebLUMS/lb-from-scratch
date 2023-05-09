@@ -36,8 +36,8 @@ int xdp_load_balancer(struct xdp_md *ctx)
     if (data + sizeof(struct ethhdr) + sizeof(struct iphdr) + sizeof(struct udphdr) > data_end)
         return XDP_ABORTED;
     
-    if (iph->saddr == CLIENT_IP && udph->dest == 34254) {
-        bpf_printk("Got UDP packet from %x and client is %x \n", iph->saddr, CLIENT_IP);
+    if (iph->saddr == CLIENT_IP && udph->dest == bpf_ntohs(0x85CE)) {
+        bpf_printk("Received pkt");
     } else {
         return XDP_PASS;
     }
@@ -65,7 +65,7 @@ int xdp_load_balancer(struct xdp_md *ctx)
 
     iph->check = iph_csum(iph);
     
-    return XDP_TX;
+    return XDP_REDIRECT;
 }
 
 char _license[] SEC("license") = "GPL";
