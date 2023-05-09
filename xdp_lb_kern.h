@@ -3,6 +3,7 @@
 #include <linux/in.h>
 #include <linux/if_ether.h>
 #include <linux/ip.h>
+#include <linux/udp.h>
 #include "libbpf/src/bpf_helpers.h"
 #include "libbpf/src/bpf_endian.h"
 
