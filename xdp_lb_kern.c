@@ -64,8 +64,9 @@ int xdp_load_balancer(struct xdp_md *ctx)
     eth->h_source[5] = proxy_mac[5];
 
     iph->check = iph_csum(iph);
+    updh->check = 0;
     
-    return XDP_REDIRECT;
+    return XDP_TX;
 }
 
 char _license[] SEC("license") = "GPL";
